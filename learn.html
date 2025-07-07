@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stoxly – Learn</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Stoxly</div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="learn.html">Learn</a></li>
+      <li><a href="trade.html">Trade</a></li>
+      <li><a href="ai.html">AI Mentor</a></li>
+      <li><a href="social.html">Social</a></li>
+      <li><a href="monetization.html">Monetization</a></li>
+      <li><a href="profile.html">Profile</a></li>
+    </ul>
+  </nav>
+  <header class="hero">
+    <h1>Learn with Stoxly</h1>
+    <p class="tagline">Master the markets, one lesson at a time.</p>
+    <p class="vision">Explore interactive courses, quizzes, daily news, and a rich glossary to build your stock market expertise.</p>
+  </header>
+  <section class="modules-section">
+    <h2>🧩 Core Learning Modules</h2>
+    <div class="modules-grid">
+      <div class="module-card" data-module="learn">
+        <h3>📚 Courses</h3>
+        <ul>
+          <li>Basic to advanced stock concepts</li>
+          <li>Videos & interactive slides</li>
+        </ul>
+        <button class="course-btn" id="openCourse">View Course</button>
+      </div>
+      <div class="module-card" data-module="quiz">
+        <h3>🧩 Quizzes</h3>
+        <ul>
+          <li>Unlock badges & points</li>
+          <li>Level up as you learn</li>
+        </ul>
+        <button class="quiz-btn" id="openQuiz">Try a Quiz</button>
+      </div>
+      <div class="module-card" data-module="news">
+        <h3>💡 StoxBites</h3>
+        <ul>
+          <li>Daily simplified financial news</li>
+          <li>1-min reads, always fresh</li>
+        </ul>
+      </div>
+      <div class="module-card" data-module="glossary">
+        <h3>🧾 Glossary</h3>
+        <ul>
+          <li>500+ simplified terms</li>
+          <li>Illustrations for easy learning</li>
+        </ul>
+        <button class="glossary-btn" id="toggleGlossary">Show Glossary</button>
+      </div>
+    </div>
+  </section>
+  <section class="glossary-section" id="glossarySection" style="display:none;">
+    <h2>📖 Sample Glossary</h2>
+    <ul class="glossary-list">
+      <li><strong>Bull Market:</strong> A market in which prices are rising or expected to rise.</li>
+      <li><strong>Bear Market:</strong> A market in which prices are falling or expected to fall.</li>
+      <li><strong>IPO:</strong> Initial Public Offering, when a company first sells shares to the public.</li>
+      <li><strong>Dividend:</strong> A portion of a company's earnings paid to shareholders.</li>
+      <li><strong>Portfolio:</strong> A collection of financial investments like stocks, bonds, etc.</li>
+    </ul>
+  </section>
+  <section id="news" class="news-section">
+    <h2>💡 StoxBites – 1-min News</h2>
+    <div class="news-carousel" id="newsCarousel">
+      <div class="news-bite active">
+        <h4>Sensex hits all-time high 🚀</h4>
+        <p>Indian markets rally as IT and banking stocks surge. Experts say momentum may continue.</p>
+      </div>
+      <div class="news-bite">
+        <h4>RBI keeps repo rate unchanged 🏦</h4>
+        <p>Central bank maintains status quo to support growth amid global uncertainty.</p>
+      </div>
+      <div class="news-bite">
+        <h4>Tesla Q2 earnings beat estimates ⚡</h4>
+        <p>EV giant posts record deliveries, stock jumps 7% in after-hours trading.</p>
+      </div>
+      <div class="news-bite">
+        <h4>LIC IPO: India's biggest ever! 📈</h4>
+        <p>LIC's blockbuster IPO sees record subscriptions from retail and institutional investors.</p>
+      </div>
+      <div class="news-bite">
+        <h4>US Fed signals rate hike pause 🇺🇸</h4>
+        <p>Federal Reserve hints at a pause in rate hikes, global markets react positively.</p>
+      </div>
+      <div class="news-bite">
+        <h4>Fun Fact: What is Nifty? 🤔</h4>
+        <p>Nifty 50 is a benchmark Indian stock market index representing 50 top companies on NSE.</p>
+      </div>
+    </div>
+    <div class="carousel-controls">
+      <button id="prevNews">&#8592;</button>
+      <button id="nextNews">&#8594;</button>
+    </div>
+  </section>
+  <div class="modal" id="courseModal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeCourse">&times;</span>
+      <h3>Course Preview: Stock Market Basics</h3>
+      <ul>
+        <li>What is a stock?</li>
+        <li>How does the stock market work?</li>
+        <li>Types of stocks and exchanges</li>
+        <li>How to read stock quotes</li>
+        <li>Risks and rewards</li>
+      </ul>
+      <button id="startCourse">Start Course</button>
+    </div>
+  </div>
+  <div class="quiz-modal" id="quizModal">
+    <div class="quiz-content">
+      <span class="close-modal" id="closeQuiz">&times;</span>
+      <h3 id="quizQuestion">Quiz: What is a "bull market"?</h3>
+      <form id="quizForm">
+        <label><input type="radio" name="quiz" value="a"> A market where prices are falling</label><br>
+        <label><input type="radio" name="quiz" value="b"> A market where prices are rising</label><br>
+        <label><input type="radio" name="quiz" value="c"> A market with no change</label><br>
+        <button type="submit">Submit</button>
+      </form>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+    </div>
+  </div>
+  <footer id="footer" class="footer">
+    <div class="footer-content">
+      <div>
+        <strong>Contact:</strong>
+        <p><a href="mailto:info@stoxly.com">info@stoxly.com</a></p>
+        <p>© 2024 Stoxly. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <button id="backToTop" title="Back to Top">↑</button>
+  <script src="script.js"></script>
+</body>
+</html> 

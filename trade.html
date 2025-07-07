@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stoxly – Trade</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Stoxly</div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="learn.html">Learn</a></li>
+      <li><a href="trade.html">Trade</a></li>
+      <li><a href="ai.html">AI Mentor</a></li>
+      <li><a href="social.html">Social</a></li>
+      <li><a href="monetization.html">Monetization</a></li>
+      <li><a href="profile.html">Profile</a></li>
+    </ul>
+  </nav>
+  <header class="hero">
+    <h1>Trade & Compete</h1>
+    <p class="tagline">Experience the thrill of the markets—risk-free.</p>
+    <p class="vision">Manage your virtual portfolio, join weekly battles, and climb the leaderboards in a gamified trading environment.</p>
+  </header>
+  <section class="modules-section">
+    <h2>💰 Virtual Stock Market</h2>
+    <div class="modules-grid">
+      <div class="module-card" data-module="portfolio">
+        <h3>₹1L Dummy Portfolio</h3>
+        <ul>
+          <li>Buy & sell stocks with virtual money</li>
+          <li>Track your performance in real time</li>
+        </ul>
+        <div class="portfolio-table-container">
+          <table class="portfolio-table" id="portfolioTable">
+            <thead>
+              <tr><th>Stock</th><th>Qty</th><th>Price</th><th>Value</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr><td>ITC</td><td>10</td><td>₹430</td><td>₹4,300</td><td><button class="remove-stock">Remove</button></td></tr>
+              <tr><td>INFY</td><td>5</td><td>₹1,500</td><td>₹7,500</td><td><button class="remove-stock">Remove</button></td></tr>
+            </tbody>
+          </table>
+          <form id="addStockForm" class="add-stock-form">
+            <input type="text" id="stockName" placeholder="Stock (e.g. TCS)" required style="width:70px;">
+            <input type="number" id="stockQty" placeholder="Qty" min="1" required style="width:50px;">
+            <input type="number" id="stockPrice" placeholder="Price" min="1" required style="width:70px;">
+            <button type="submit">Add</button>
+          </form>
+        </div>
+      </div>
+      <div class="module-card" data-module="unlockables">
+        <h3>🧩 Unlockables</h3>
+        <ul>
+          <li>Unlock candlestick tools, alerts, analytics as you level up</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <section class="battle-arena-section">
+    <h2><span class="section-icon">⚔️</span> Battle Arena Preview</h2>
+    <div class="battle-arena-grid">
+      <div class="battle-card">
+        <h4>Weekly Battle</h4>
+        <p>Predict the top 3 gainers/losers for the week and compete globally or within your college.</p>
+        <button class="battle-btn">View Sample Battle</button>
+      </div>
+      <div class="battle-card">
+        <h4>Unlockables</h4>
+        <ul>
+          <li>🔓 Candlestick Tools</li>
+          <li>🔔 Custom Alerts</li>
+          <li>📊 Advanced Analytics</li>
+        </ul>
+      </div>
+      <div class="battle-card">
+        <h4>Leaderboard</h4>
+        <p>Track your progress and see how you rank among peers.</p>
+        <button class="battle-btn">See Leaderboard</button>
+      </div>
+    </div>
+  </section>
+  <section class="leaderboard-section">
+    <h2>🏆 Weekly Leaderboard</h2>
+    <table class="leaderboard-table" id="leaderboardTable">
+      <thead>
+        <tr><th>Rank</th><th>Name</th><th>Portfolio</th><th>Change</th><th>Club</th></tr>
+      </thead>
+      <tbody>
+        <tr class="rank-1"><td>1</td><td>Priya S.</td><td>₹1,23,000</td><td>+8.2%</td><td><span class="club-tag">IIT Bombay</span></td></tr>
+        <tr class="rank-2"><td>2</td><td>Rohit M.</td><td>₹1,19,500</td><td>+6.7%</td><td><span class="club-tag">SRCC</span></td></tr>
+        <tr class="rank-3"><td>3</td><td>Fatima K.</td><td>₹1,17,800</td><td>+5.9%</td><td><span class="club-tag">BITS Pilani</span></td></tr>
+        <tr><td>4</td><td>Arjun T.</td><td>₹1,15,200</td><td>+4.1%</td><td><span class="club-tag">IIM A</span></td></tr>
+        <tr class="you-row"><td>5</td><td>You</td><td>₹1,14,000</td><td>+3.2%</td><td><span class="club-tag">Stoxly Club</span></td></tr>
+        <tr><td>6</td><td>Meera P.</td><td>₹1,12,800</td><td>+2.7%</td><td><span class="club-tag">IIT Delhi</span></td></tr>
+        <tr><td>7</td><td>Jay D.</td><td>₹1,11,900</td><td>+2.1%</td><td><span class="club-tag">NMIMS</span></td></tr>
+        <tr><td>8</td><td>Simran G.</td><td>₹1,10,500</td><td>+1.5%</td><td><span class="club-tag">DU</span></td></tr>
+        <tr><td>9</td><td>Vikram S.</td><td>₹1,09,200</td><td>+0.8%</td><td><span class="club-tag">IIT KGP</span></td></tr>
+        <tr><td>10</td><td>Riya Z.</td><td>₹1,08,000</td><td>+0.2%</td><td><span class="club-tag">XIMB</span></td></tr>
+      </tbody>
+    </table>
+    <div class="leaderboard-animate-btns">
+      <button id="shuffleLeaderboard">Shuffle Ranks</button>
+    </div>
+  </section>
+  <section class="chart-section">
+    <h2><span class="section-icon">📊</span> TradingView-style Chart</h2>
+    <div class="chart-controls">
+      <label for="chartTimeframe">Timeframe:</label>
+      <select id="chartTimeframe">
+        <option value="1d">1D</option>
+        <option value="1w">1W</option>
+        <option value="1m">1M</option>
+      </select>
+    </div>
+    <div class="chart-placeholder">
+      <img id="chartImg" src="https://dummyimage.com/600x280/edf2f7/aaa&text=Stock+Chart+Widget+Demo" alt="Chart Widget" />
+      <p class="chart-caption">Interactive charts coming soon! Powered by TradingView APIs.</p>
+    </div>
+  </section>
+  <footer id="footer" class="footer">
+    <div class="footer-content">
+      <div>
+        <strong>Contact:</strong>
+        <p><a href="mailto:info@stoxly.com">info@stoxly.com</a></p>
+        <p>© 2024 Stoxly. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <button id="backToTop" title="Back to Top">↑</button>
+  <script src="script.js"></script>
+</body>
+</html> 

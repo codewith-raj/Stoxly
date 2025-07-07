@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stoxly – Social</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Stoxly</div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="learn.html">Learn</a></li>
+      <li><a href="trade.html">Trade</a></li>
+      <li><a href="ai.html">AI Mentor</a></li>
+      <li><a href="social.html">Social</a></li>
+      <li><a href="monetization.html">Monetization</a></li>
+      <li><a href="profile.html">Profile</a></li>
+    </ul>
+  </nav>
+  <header class="hero">
+    <h1>StoxTalk Social</h1>
+    <p class="tagline">Connect, share, and grow with the Stoxly community.</p>
+    <p class="vision">Post your trades, vote on sentiment, join college clubs, and ask mentors for advice.</p>
+  </header>
+  <section class="social-section">
+    <h2>💬 Social Feed</h2>
+    <div class="social-feed">
+      <div class="post">
+        <div class="post-header"><span class="user">@trader_rahul</span> <span class="time">2m ago</span></div>
+        <div class="post-content">I just bought ITC @ ₹430. Thoughts?</div>
+        <div class="post-actions">
+          <button class="vote-btn" data-vote="bullish">🐂 Bullish <span class="vote-count" id="bullish1">12</span></button>
+          <button class="vote-btn" data-vote="bearish">🐻 Bearish <span class="vote-count" id="bearish1">3</span></button>
+        </div>
+      </div>
+      <div class="post">
+        <div class="post-header"><span class="user">@finfluencer_anu</span> <span class="time">10m ago</span></div>
+        <div class="post-content">Nifty looks overbought. Watching for a correction next week.</div>
+        <div class="post-actions">
+          <button class="vote-btn" data-vote="bullish">🐂 Bullish <span class="vote-count" id="bullish2">7</span></button>
+          <button class="vote-btn" data-vote="bearish">🐻 Bearish <span class="vote-count" id="bearish2">9</span></button>
+        </div>
+      </div>
+      <div class="post">
+        <div class="post-header"><span class="user">@stock_memes</span> <span class="time">15m ago</span></div>
+        <div class="post-content">When you buy the dip and it keeps dipping... 😂📉</div>
+        <div class="post-actions">
+          <button class="vote-btn" data-vote="bullish">🐂 Bullish <span class="vote-count" id="bullish3">4</span></button>
+          <button class="vote-btn" data-vote="bearish">🐻 Bearish <span class="vote-count" id="bearish3">11</span></button>
+        </div>
+      </div>
+      <div class="post">
+        <div class="post-header"><span class="user">@ipo_hunter</span> <span class="time">30m ago</span></div>
+        <div class="post-content">LIC IPO is a game changer! Who applied? 🚀</div>
+        <div class="post-actions">
+          <button class="vote-btn" data-vote="bullish">🐂 Bullish <span class="vote-count" id="bullish4">15</span></button>
+          <button class="vote-btn" data-vote="bearish">🐻 Bearish <span class="vote-count" id="bearish4">2</span></button>
+        </div>
+      </div>
+      <div class="post">
+        <div class="post-header"><span class="user">@learn_stoxly</span> <span class="time">1h ago</span></div>
+        <div class="post-content">Did you know? The term "bull market" comes from the way a bull attacks by thrusting its horns upward!</div>
+        <div class="post-actions">
+          <button class="vote-btn" data-vote="bullish">🐂 Bullish <span class="vote-count" id="bullish5">9</span></button>
+          <button class="vote-btn" data-vote="bearish">🐻 Bearish <span class="vote-count" id="bearish5">1</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="clubs-section">
+    <h2>🎙️ College Clubs & Private Rooms</h2>
+    <div class="clubs-preview">
+      <div class="club-card" tabindex="0">
+        <h4>IIT Bombay Club</h4>
+        <p>Private room for IIT Bombay students. <span class="club-tag">120 members</span></p>
+        <div class="club-details" style="display:none;">
+          <ul>
+            <li>Weekly webinars</li>
+            <li>Stock pitch competitions</li>
+            <li>Peer mentoring</li>
+          </ul>
+        </div>
+        <button class="toggle-club">Show Details</button>
+      </div>
+      <div class="club-card" tabindex="0">
+        <h4>SRCC Club</h4>
+        <p>Private room for SRCC students. <span class="club-tag">98 members</span></p>
+        <div class="club-details" style="display:none;">
+          <ul>
+            <li>Live trading contests</li>
+            <li>Guest lectures</li>
+            <li>Finance workshops</li>
+          </ul>
+        </div>
+        <button class="toggle-club">Show Details</button>
+      </div>
+      <div class="club-card" tabindex="0">
+        <h4>DU FinSoc</h4>
+        <p>Private room for Delhi University finance enthusiasts. <span class="club-tag">75 members</span></p>
+        <div class="club-details" style="display:none;">
+          <ul>
+            <li>Case study sessions</li>
+            <li>Mock stock market</li>
+            <li>Networking events</li>
+          </ul>
+        </div>
+        <button class="toggle-club">Show Details</button>
+      </div>
+    </div>
+  </section>
+  <section class="mentor-section">
+    <h2>🧑‍🏫 Ask Mentor (Demo)</h2>
+    <div class="mentor-chat-demo">
+      <div class="mentor-msg user-msg">How do I start investing in stocks?</div>
+      <div class="mentor-msg ai-msg">Start by learning the basics, set your goals, and use Stoxly's virtual market to practice before investing real money!</div>
+    </div>
+    <form id="mentorForm" class="mentor-form">
+      <input type="text" id="mentorInput" placeholder="Ask a question..." required style="width:220px;">
+      <button type="submit">Ask</button>
+    </form>
+    <div id="mentorResponse" class="mentor-response"></div>
+  </section>
+  <footer id="footer" class="footer">
+    <div class="footer-content">
+      <div>
+        <strong>Contact:</strong>
+        <p><a href="mailto:info@stoxly.com">info@stoxly.com</a></p>
+        <p>© 2024 Stoxly. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <button id="backToTop" title="Back to Top">↑</button>
+  <script src="script.js"></script>
+</body>
+</html> 

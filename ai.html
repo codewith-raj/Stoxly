@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stoxly – AI Mentor</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Stoxly</div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="learn.html">Learn</a></li>
+      <li><a href="trade.html">Trade</a></li>
+      <li><a href="ai.html">AI Mentor</a></li>
+      <li><a href="social.html">Social</a></li>
+      <li><a href="monetization.html">Monetization</a></li>
+      <li><a href="profile.html">Profile</a></li>
+    </ul>
+  </nav>
+  <header class="hero">
+    <h1>AI Stock Mentor</h1>
+    <p class="tagline">Your personal AI-powered investing assistant.</p>
+    <p class="vision">Get personalized recommendations, sentiment analysis, and predictive tools to make smarter stock decisions.</p>
+  </header>
+  <section class="ai-mentor-section">
+    <h2><span class="section-icon">🤖</span> AI Stock Mentor Features</h2>
+    <div class="ai-mentor-grid">
+      <div class="ai-mentor-card" tabindex="0" data-info="Get stock picks tailored to your portfolio and market trends, powered by AI. AI considers your past trades, risk profile, and current market conditions.">
+        <div class="ai-mentor-icon">🧑‍💼</div>
+        <h4>Personalized Recommendations</h4>
+        <p>Get stock picks tailored to your portfolio and market trends, powered by AI.</p>
+      </div>
+      <div class="ai-mentor-card" tabindex="0" data-info="AI scans news, Twitter, and forums to give a real-time confidence score for any stock. Helps you gauge market mood instantly.">
+        <div class="ai-mentor-icon">🔍</div>
+        <h4>AI Sentiment Analyzer</h4>
+        <p>See real-time confidence scores from news and social media sentiment.</p>
+      </div>
+      <div class="ai-mentor-card" tabindex="0" data-info="Combines fundamentals, technicals, and news into a single scorecard. Instantly see if a stock is strong, weak, or neutral.">
+        <div class="ai-mentor-icon">📈</div>
+        <h4>Stock Scorecard</h4>
+        <p>View a holistic score combining fundamentals, technicals, and news.</p>
+      </div>
+      <div class="ai-mentor-card" tabindex="0" data-info="Simulate: If you bought X shares of a stock on Y date, what would your gain/loss be today? Great for learning and backtesting.">
+        <div class="ai-mentor-icon">🧮</div>
+        <h4>What If? Simulator</h4>
+        <p>Predict your gains/losses if you had bought a stock on any past date.</p>
+        <form id="whatIfForm" class="whatif-form">
+          <input type="text" id="whatIfStock" placeholder="Stock (e.g. ITC)" required style="width:70px;">
+          <input type="date" id="whatIfDate" required style="width:130px;">
+          <button type="submit">Simulate</button>
+        </form>
+        <div id="whatIfResult" class="whatif-result"></div>
+      </div>
+    </div>
+  </section>
+  <footer id="footer" class="footer">
+    <div class="footer-content">
+      <div>
+        <strong>Contact:</strong>
+        <p><a href="mailto:info@stoxly.com">info@stoxly.com</a></p>
+        <p>© 2024 Stoxly. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <button id="backToTop" title="Back to Top">↑</button>
+  <script src="script.js"></script>
+</body>
+</html> 

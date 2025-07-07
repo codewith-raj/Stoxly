@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stoxly – Profile</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Stoxly</div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="learn.html">Learn</a></li>
+      <li><a href="trade.html">Trade</a></li>
+      <li><a href="ai.html">AI Mentor</a></li>
+      <li><a href="social.html">Social</a></li>
+      <li><a href="monetization.html">Monetization</a></li>
+      <li><a href="profile.html">Profile</a></li>
+    </ul>
+  </nav>
+  <header class="hero">
+    <h1>Your Profile</h1>
+    <p class="tagline">Track your progress and showcase your achievements.</p>
+    <p class="vision">View your level, XP, badges, and more. Personalize your Stoxly experience.</p>
+  </header>
+  <section class="profile-section">
+    <h2><span class="section-icon">👤</span> Your Profile</h2>
+    <div class="profile-card">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" class="profile-avatar" />
+      <div class="profile-info">
+        <h3>Ritik Sharma</h3>
+        <p class="profile-tag">@ritik_trader</p>
+        <div class="profile-stats">
+          <span><strong>Level:</strong> 7</span>
+          <span><strong>XP:</strong> 6,800</span>
+          <span><strong>Badges:</strong> 
+            <span class="badge" title="Quiz Master">🧠</span>
+            <span class="badge" title="Top Trader">💹</span>
+            <span class="badge" title="News Guru">📰</span>
+            <span class="badge" title="Battle Winner">⚔️</span>
+            <span class="badge" title="Stoxly OG">🌟</span>
+          </span>
+        </div>
+        <button class="edit-profile-btn" id="openEditProfile">Edit Profile</button>
+      </div>
+    </div>
+  </section>
+  <div class="modal" id="editProfileModal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeEditProfile">&times;</span>
+      <h3>Edit Profile (Demo)</h3>
+      <form>
+        <label>Name: <input type="text" value="Ritik Sharma" disabled></label><br><br>
+        <label>Username: <input type="text" value="ritik_trader" disabled></label><br><br>
+        <label>Email: <input type="email" value="ritik@email.com" disabled></label><br><br>
+        <button type="button" disabled>Save Changes</button>
+      </form>
+      <p style="margin-top:1rem;color:#888;">(Profile editing coming soon!)</p>
+    </div>
+  </div>
+  <footer id="footer" class="footer">
+    <div class="footer-content">
+      <div>
+        <strong>Contact:</strong>
+        <p><a href="mailto:info@stoxly.com">info@stoxly.com</a></p>
+        <p>© 2024 Stoxly. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <button id="backToTop" title="Back to Top">↑</button>
+  <script src="script.js"></script>
+</body>
+</html> 
