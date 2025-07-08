@@ -32,14 +32,18 @@
   </header>
   <section class="profile-section">
     <h2><span class="section-icon">👤</span> Your Profile</h2>
-    <div class="profile-card">
-      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" class="profile-avatar" />
+    <div class="profile-card" id="profileCard">
+      <div class="profile-avatar-wrapper">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar" class="profile-avatar" id="profileAvatar" />
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+        <button id="changeAvatarBtn" class="change-avatar-btn">Change</button>
+      </div>
       <div class="profile-info">
-        <h3>Ritik Sharma</h3>
-        <p class="profile-tag">@ritik_trader</p>
+        <h3 id="profileName">Ritik Sharma</h3>
+        <p class="profile-tag" id="profileUsername">@ritik_trader</p>
         <div class="profile-stats">
-          <span><strong>Level:</strong> 7</span>
-          <span><strong>XP:</strong> 6,800</span>
+          <span><strong>Level:</strong> <span id="profileLevel">7</span></span>
+          <span><strong>XP:</strong> <span id="profileXP">6,800</span></span>
           <span><strong>Badges:</strong> 
             <span class="badge" title="Quiz Master">🧠</span>
             <span class="badge" title="Top Trader">💹</span>
@@ -48,21 +52,44 @@
             <span class="badge" title="Stoxly OG">🌟</span>
           </span>
         </div>
+        <div class="profile-extra">
+          <p id="profileBio"><strong>Bio:</strong> Aspiring trader and finance enthusiast.</p>
+          <p id="profileLocation"><strong>Location:</strong> Mumbai, India</p>
+          <p id="profileJoinDate"><strong>Joined:</strong> Jan 2024</p>
+          <p id="profileFavStocks"><strong>Favorite Stocks:</strong> ITC, INFY, TCS</p>
+        </div>
+        <div class="profile-social">
+          <a href="https://twitter.com/ritik_trader" id="profileTwitter" target="_blank">🐦 Twitter</a>
+          <a href="https://linkedin.com/in/ritiksharma" id="profileLinkedIn" target="_blank">💼 LinkedIn</a>
+        </div>
         <button class="edit-profile-btn" id="openEditProfile">Edit Profile</button>
       </div>
     </div>
   </section>
+  <section class="recent-activity-section">
+    <h2><span class="section-icon">📈</span> Recent Activity</h2>
+    <ul class="recent-activity-list" id="recentActivityList">
+      <li>🏆 Earned <strong>Top Trader</strong> badge</li>
+      <li>💹 Bought <strong>10 ITC</strong> @ ₹430</li>
+      <li>📰 Posted: "Nifty looks overbought. Watching for a correction next week."</li>
+      <li>⚔️ Won <strong>Weekly Battle</strong> (Mar 2024)</li>
+    </ul>
+  </section>
   <div class="modal" id="editProfileModal">
     <div class="modal-content">
       <span class="close-modal" id="closeEditProfile">&times;</span>
-      <h3>Edit Profile (Demo)</h3>
-      <form>
-        <label>Name: <input type="text" value="Ritik Sharma" disabled></label><br><br>
-        <label>Username: <input type="text" value="ritik_trader" disabled></label><br><br>
-        <label>Email: <input type="email" value="ritik@email.com" disabled></label><br><br>
-        <button type="button" disabled>Save Changes</button>
+      <h3>Edit Profile</h3>
+      <form id="editProfileForm">
+        <label>Name: <input type="text" id="editName" value="Ritik Sharma"></label><br><br>
+        <label>Username: <input type="text" id="editUsername" value="ritik_trader"></label><br><br>
+        <label>Email: <input type="email" id="editEmail" value="ritik@email.com"></label><br><br>
+        <label>Bio: <input type="text" id="editBio" value="Aspiring trader and finance enthusiast."></label><br><br>
+        <label>Location: <input type="text" id="editLocation" value="Mumbai, India"></label><br><br>
+        <label>Favorite Stocks: <input type="text" id="editFavStocks" value="ITC, INFY, TCS"></label><br><br>
+        <label>Twitter: <input type="text" id="editTwitter" value="https://twitter.com/ritik_trader"></label><br><br>
+        <label>LinkedIn: <input type="text" id="editLinkedIn" value="https://linkedin.com/in/ritiksharma"></label><br><br>
+        <button type="submit">Save Changes</button>
       </form>
-      <p style="margin-top:1rem;color:#888;">(Profile editing coming soon!)</p>
     </div>
   </div>
   <footer id="footer" class="footer">

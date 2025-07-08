@@ -15,18 +15,25 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // Expand/collapse module cards
-  document.querySelectorAll('.module-card').forEach(card => {
-    card.addEventListener('click', () => {
-      card.classList.toggle('expanded');
-      if (card.classList.contains('expanded')) {
-        card.style.maxHeight = '600px';
-        card.style.background = '#e6fffa';
-      } else {
-        card.style.maxHeight = '';
-        card.style.background = '';
-      }
+  const moduleCards = document.querySelectorAll('.module-card');
+  if (moduleCards.length > 0) {
+    moduleCards.forEach(card => {
+      card.addEventListener('click', () => {
+        try {
+          card.classList.toggle('expanded');
+          if (card.classList.contains('expanded')) {
+            card.style.maxHeight = '600px';
+            card.style.background = '#e6fffa';
+          } else {
+            card.style.maxHeight = '';
+            card.style.background = '';
+          }
+        } catch (error) {
+          console.error('Error in module card expansion:', error);
+        }
+      });
     });
-  });
+  }
 
   // Highlight current page
   const navLinks = document.querySelectorAll('.nav-links a');
@@ -60,40 +67,61 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
   showNews(newsIndex);
-  document.getElementById('prevNews').onclick = () => {
-    newsIndex = (newsIndex - 1 + newsBites.length) % newsBites.length;
-    showNews(newsIndex);
-  };
-  document.getElementById('nextNews').onclick = () => {
-    newsIndex = (newsIndex + 1) % newsBites.length;
-    showNews(newsIndex);
-  };
+  const prevNewsBtn = document.getElementById('prevNews');
+  const nextNewsBtn = document.getElementById('nextNews');
+  if (prevNewsBtn) {
+    prevNewsBtn.onclick = () => {
+      newsIndex = (newsIndex - 1 + newsBites.length) % newsBites.length;
+      showNews(newsIndex);
+    };
+  }
+  if (nextNewsBtn) {
+    nextNewsBtn.onclick = () => {
+      newsIndex = (newsIndex + 1) % newsBites.length;
+      showNews(newsIndex);
+    };
+  }
 
   // Leaderboard shuffle animation
   const leaderboardTable = document.getElementById('leaderboardTable');
   const shuffleBtn = document.getElementById('shuffleLeaderboard');
   if (leaderboardTable && shuffleBtn) {
     shuffleBtn.addEventListener('click', () => {
-      const tbody = leaderboardTable.querySelector('tbody');
-      const rows = Array.from(tbody.querySelectorAll('tr'));
-      // Keep 'You' row in place
-      const youRow = rows.find(row => row.classList.contains('you-row'));
-      const otherRows = rows.filter(row => !row.classList.contains('you-row'));
-      // Fisher-Yates shuffle
-      for (let i = otherRows.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        tbody.insertBefore(otherRows[j], otherRows[i]);
-        [otherRows[i], otherRows[j]] = [otherRows[j], otherRows[i]];
+      try {
+        const tbody = leaderboardTable.querySelector('tbody');
+        if (!tbody) return;
+        
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        if (rows.length === 0) return;
+        
+        // Keep 'You' row in place
+        const youRow = rows.find(row => row.classList.contains('you-row'));
+        const otherRows = rows.filter(row => !row.classList.contains('you-row'));
+        
+        // Fisher-Yates shuffle
+        for (let i = otherRows.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          if (otherRows[j] && otherRows[i] && otherRows[j].parentNode === tbody && otherRows[i].parentNode === tbody) {
+            tbody.insertBefore(otherRows[j], otherRows[i]);
+            [otherRows[i], otherRows[j]] = [otherRows[j], otherRows[i]];
+          }
+        }
+        
+        // Re-insert 'You' row at its original index (for demo, keep at 5th)
+        if (youRow && tbody.children.length >= 4) {
+          tbody.insertBefore(youRow, tbody.children[4] || null);
+        }
+        
+        // Animate color for top 3
+        Array.from(tbody.children).forEach((row, idx) => {
+          row.classList.remove('rank-1', 'rank-2', 'rank-3');
+          if (idx === 0) row.classList.add('rank-1');
+          else if (idx === 1) row.classList.add('rank-2');
+          else if (idx === 2) row.classList.add('rank-3');
+        });
+      } catch (error) {
+        console.error('Error in leaderboard shuffle:', error);
       }
-      // Re-insert 'You' row at its original index (for demo, keep at 5th)
-      if (youRow) tbody.insertBefore(youRow, tbody.children[4]);
-      // Animate color for top 3
-      Array.from(tbody.children).forEach((row, idx) => {
-        row.classList.remove('rank-1', 'rank-2', 'rank-3');
-        if (idx === 0) row.classList.add('rank-1');
-        else if (idx === 1) row.classList.add('rank-2');
-        else if (idx === 2) row.classList.add('rank-3');
-      });
     });
   }
 
@@ -163,75 +191,130 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // Social feed voting
-  document.querySelectorAll('.post').forEach((post, idx) => {
-    const bullishBtn = post.querySelector('.vote-btn[data-vote="bullish"]');
-    const bearishBtn = post.querySelector('.vote-btn[data-vote="bearish"]');
-    const bullishCount = post.querySelector('.vote-count#bullish' + (idx+1));
-    const bearishCount = post.querySelector('.vote-count#bearish' + (idx+1));
-    if (bullishBtn && bearishBtn && bullishCount && bearishCount) {
-      bullishBtn.addEventListener('click', () => {
-        bullishBtn.classList.add('selected');
-        bearishBtn.classList.remove('selected');
-        bullishCount.textContent = parseInt(bullishCount.textContent) + 1;
-        bullishBtn.classList.add('vote-animate');
-        setTimeout(() => bullishBtn.classList.remove('vote-animate'), 300);
-      });
-      bearishBtn.addEventListener('click', () => {
-        bearishBtn.classList.add('selected');
-        bullishBtn.classList.remove('selected');
-        bearishCount.textContent = parseInt(bearishCount.textContent) + 1;
-        bearishBtn.classList.add('vote-animate');
-        setTimeout(() => bearishBtn.classList.remove('vote-animate'), 300);
-      });
-    }
-  });
+  const posts = document.querySelectorAll('.post');
+  if (posts.length > 0) {
+    posts.forEach((post, idx) => {
+      try {
+        const bullishBtn = post.querySelector('.vote-btn[data-vote="bullish"]');
+        const bearishBtn = post.querySelector('.vote-btn[data-vote="bearish"]');
+        const bullishCount = post.querySelector('.vote-count#bullish' + (idx+1));
+        const bearishCount = post.querySelector('.vote-count#bearish' + (idx+1));
+        
+        if (bullishBtn && bearishBtn && bullishCount && bearishCount) {
+          bullishBtn.addEventListener('click', () => {
+            bullishBtn.classList.add('selected');
+            bearishBtn.classList.remove('selected');
+            bullishCount.textContent = parseInt(bullishCount.textContent || '0') + 1;
+            bullishBtn.classList.add('vote-animate');
+            setTimeout(() => bullishBtn.classList.remove('vote-animate'), 300);
+          });
+          
+          bearishBtn.addEventListener('click', () => {
+            bearishBtn.classList.add('selected');
+            bullishBtn.classList.remove('selected');
+            bearishCount.textContent = parseInt(bearishCount.textContent || '0') + 1;
+            bearishBtn.classList.add('vote-animate');
+            setTimeout(() => bearishBtn.classList.remove('vote-animate'), 300);
+          });
+        }
+      } catch (error) {
+        console.error('Error in social feed voting setup:', error);
+      }
+    });
+  }
 
   // Section fade-in on scroll
   const fadeSections = document.querySelectorAll('section, .profile-section, .ai-mentor-section, .battle-arena-section, .chart-section, .monetization-section');
-  const fadeInOnScroll = () => {
-    fadeSections.forEach(sec => {
-      const rect = sec.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 80) {
-        sec.classList.add('fade-in');
+  if (fadeSections.length > 0) {
+    const fadeInOnScroll = () => {
+      try {
+        fadeSections.forEach(sec => {
+          if (sec) {
+            const rect = sec.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 80) {
+              sec.classList.add('fade-in');
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Error in fade-in effect:', error);
       }
-    });
-  };
-  window.addEventListener('scroll', fadeInOnScroll);
-  fadeInOnScroll();
+    };
+    window.addEventListener('scroll', fadeInOnScroll);
+    // Initial call to show sections that are already in viewport
+    setTimeout(fadeInOnScroll, 100);
+  }
 
   // Improved button/card hover (add ripple effect)
-  document.querySelectorAll('button, .module-card, .ai-mentor-card, .battle-card, .monetization-card').forEach(el => {
-    el.addEventListener('mousedown', function(e) {
-      let ripple = document.createElement('span');
-      ripple.className = 'ripple';
-      ripple.style.left = e.offsetX + 'px';
-      ripple.style.top = e.offsetY + 'px';
-      this.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
+  const rippleElements = document.querySelectorAll('button, .module-card, .ai-mentor-card, .battle-card, .monetization-card');
+  if (rippleElements.length > 0) {
+    rippleElements.forEach(el => {
+      el.addEventListener('mousedown', function(e) {
+        try {
+          let ripple = document.createElement('span');
+          ripple.className = 'ripple';
+          ripple.style.left = e.offsetX + 'px';
+          ripple.style.top = e.offsetY + 'px';
+          this.appendChild(ripple);
+          setTimeout(() => {
+            if (ripple && ripple.parentNode === this) {
+              ripple.remove();
+            }
+          }, 600);
+        } catch (error) {
+          console.error('Error in ripple effect:', error);
+        }
+      });
     });
-  });
+  }
 
   // Modals close on Esc
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      document.querySelectorAll('.modal, .quiz-modal').forEach(modal => {
-        modal.classList.remove('active');
-      });
+      try {
+        const modals = document.querySelectorAll('.modal, .quiz-modal');
+        if (modals.length > 0) {
+          modals.forEach(modal => {
+            if (modal) {
+              modal.classList.remove('active');
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error in modal escape key handling:', error);
+      }
     }
   });
 
-  // Back to Top button
-  const backToTop = document.getElementById('backToTop');
-  if (backToTop) {
+  // Back to top button
+  const backToTopBtn = document.querySelector('.back-to-top') || document.getElementById('backToTop');
+  if (backToTopBtn) {
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) {
-        backToTop.style.display = 'block';
-      } else {
-        backToTop.style.display = 'none';
+      try {
+        if (window.scrollY > 300) {
+          if (backToTopBtn.classList) {
+            backToTopBtn.classList.add('visible');
+          } else {
+            backToTopBtn.style.display = 'block';
+          }
+        } else {
+          if (backToTopBtn.classList) {
+            backToTopBtn.classList.remove('visible');
+          } else {
+            backToTopBtn.style.display = 'none';
+          }
+        }
+      } catch (error) {
+        console.error('Error in back-to-top scroll handling:', error);
       }
     });
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    backToTopBtn.addEventListener('click', () => {
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (error) {
+        console.error('Error in back-to-top click handling:', error);
+      }
     });
   }
 
@@ -259,17 +342,55 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
+    
+    // Portfolio management
+    const portfolioActions = document.querySelectorAll('.portfolio-action');
+    if (portfolioActions.length > 0) {
+      portfolioActions.forEach(btn => {
+        btn.addEventListener('click', function() {
+          try {
+            const action = this.dataset.action;
+            const stockRow = this.closest('.stock-row');
+            if (!stockRow) return;
+            
+            const stockNameElement = stockRow.querySelector('.stock-name');
+            if (!stockNameElement) return;
+            
+            const stockName = stockNameElement.textContent;
+            
+            if (action === 'buy') {
+              alert(`Buying more ${stockName}! (This would open a buy modal in the real app)`);
+            } else if (action === 'sell') {
+              alert(`Selling ${stockName}! (This would open a sell modal in the real app)`);
+            } else if (action === 'remove') {
+              stockRow.classList.add('removing');
+              setTimeout(() => {
+                if (stockRow.parentNode) {
+                  stockRow.remove();
+                }
+              }, 300);
+            }
+          } catch (error) {
+            console.error('Error in portfolio management:', error);
+          }
+        });
+      });
+    }
     // Chart timeframe switch
     const chartTimeframe = document.getElementById('chartTimeframe');
     const chartImg = document.getElementById('chartImg');
     if (chartTimeframe && chartImg) {
       chartTimeframe.addEventListener('change', () => {
-        if (chartTimeframe.value === '1d') {
-          chartImg.src = 'https://dummyimage.com/600x280/edf2f7/aaa&text=Stock+Chart+1D';
-        } else if (chartTimeframe.value === '1w') {
-          chartImg.src = 'https://dummyimage.com/600x280/edf2f7/aaa&text=Stock+Chart+1W';
-        } else {
-          chartImg.src = 'https://dummyimage.com/600x280/edf2f7/aaa&text=Stock+Chart+1M';
+        try {
+          if (chartTimeframe.value === '1d') {
+            chartImg.src = 'https://dummyimage.com/600x280/edf2f7/aaa&text=Stock+Chart+1D';
+          } else if (chartTimeframe.value === '1w') {
+            chartImg.src = 'https://dummyimage.com/600x280/edf2f7/aaa&text=Stock+Chart+1W';
+          } else {
+            chartImg.src = 'https://dummyimage.com/600x280/edf2f7/aaa&text=Stock+Chart+1M';
+          }
+        } catch (error) {
+          console.error('Error in chart timeframe switch:', error);
         }
       });
     }
@@ -278,22 +399,37 @@ window.addEventListener('DOMContentLoaded', () => {
     const shuffleBtn = document.getElementById('shuffleLeaderboard');
     if (leaderboardTable && shuffleBtn) {
       shuffleBtn.addEventListener('click', () => {
-        const tbody = leaderboardTable.querySelector('tbody');
-        const rows = Array.from(tbody.querySelectorAll('tr'));
-        const youRow = rows.find(row => row.classList.contains('you-row'));
-        const otherRows = rows.filter(row => !row.classList.contains('you-row'));
-        for (let i = otherRows.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          tbody.insertBefore(otherRows[j], otherRows[i]);
-          [otherRows[i], otherRows[j]] = [otherRows[j], otherRows[i]];
+        try {
+          const tbody = leaderboardTable.querySelector('tbody');
+          if (!tbody) return;
+          
+          const rows = Array.from(tbody.querySelectorAll('tr'));
+          if (rows.length === 0) return;
+          
+          const youRow = rows.find(row => row.classList.contains('you-row'));
+          const otherRows = rows.filter(row => !row.classList.contains('you-row'));
+          
+          for (let i = otherRows.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            if (otherRows[j] && otherRows[i] && otherRows[j].parentNode && otherRows[i].parentNode) {
+              tbody.insertBefore(otherRows[j], otherRows[i]);
+              [otherRows[i], otherRows[j]] = [otherRows[j], otherRows[i]];
+            }
+          }
+          
+          if (youRow && tbody.children.length >= 5) {
+            tbody.insertBefore(youRow, tbody.children[4]);
+          }
+          
+          Array.from(tbody.children).forEach((row, idx) => {
+            row.classList.remove('rank-1', 'rank-2', 'rank-3');
+            if (idx === 0) row.classList.add('rank-1');
+            else if (idx === 1) row.classList.add('rank-2');
+            else if (idx === 2) row.classList.add('rank-3');
+          });
+        } catch (error) {
+          console.error('Error in leaderboard shuffle:', error);
         }
-        if (youRow) tbody.insertBefore(youRow, tbody.children[4]);
-        Array.from(tbody.children).forEach((row, idx) => {
-          row.classList.remove('rank-1', 'rank-2', 'rank-3');
-          if (idx === 0) row.classList.add('rank-1');
-          else if (idx === 1) row.classList.add('rank-2');
-          else if (idx === 2) row.classList.add('rank-3');
-        });
       });
     }
   }
@@ -301,45 +437,75 @@ window.addEventListener('DOMContentLoaded', () => {
   // AI MENTOR PAGE INTERACTIVITY
   if (window.location.pathname.endsWith('ai.html')) {
     // Expand/collapse AI Mentor cards
-    document.querySelectorAll('.ai-mentor-card').forEach(card => {
-      card.addEventListener('click', function () {
-        document.querySelectorAll('.ai-mentor-card').forEach(c => {
-          if (c !== card) c.classList.remove('expanded');
-        });
-        card.classList.toggle('expanded');
-        let info = card.getAttribute('data-info');
-        if (card.classList.contains('expanded')) {
-          if (!card.querySelector('.ai-more-info')) {
-            let more = document.createElement('div');
-            more.className = 'ai-more-info';
-            more.textContent = info;
-            card.appendChild(more);
+    const aiMentorCards = document.querySelectorAll('.ai-mentor-card');
+    if (aiMentorCards.length > 0) {
+      aiMentorCards.forEach(card => {
+        card.addEventListener('click', function () {
+          try {
+            document.querySelectorAll('.ai-mentor-card').forEach(c => {
+              if (c !== card) c.classList.remove('expanded');
+            });
+            
+            card.classList.toggle('expanded');
+            let info = card.getAttribute('data-info');
+            
+            if (card.classList.contains('expanded') && info) {
+              if (!card.querySelector('.ai-more-info')) {
+                let more = document.createElement('div');
+                more.className = 'ai-more-info';
+                more.textContent = info;
+                card.appendChild(more);
+              }
+            } else {
+              let more = card.querySelector('.ai-more-info');
+              if (more) more.remove();
+            }
+          } catch (error) {
+            console.error('Error in AI mentor card expansion:', error);
           }
-        } else {
-          let more = card.querySelector('.ai-more-info');
-          if (more) more.remove();
-        }
+        });
+        
+        card.addEventListener('blur', function () {
+          try {
+            card.classList.remove('expanded');
+            let more = card.querySelector('.ai-more-info');
+            if (more) more.remove();
+          } catch (error) {
+            console.error('Error in AI mentor card blur:', error);
+          }
+        });
       });
-      card.addEventListener('blur', function () {
-        card.classList.remove('expanded');
-        let more = card.querySelector('.ai-more-info');
-        if (more) more.remove();
-      });
-    });
+    }
     // What If? Simulator
     const whatIfForm = document.getElementById('whatIfForm');
     const whatIfResult = document.getElementById('whatIfResult');
     if (whatIfForm && whatIfResult) {
       whatIfForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const stock = document.getElementById('whatIfStock').value.trim().toUpperCase();
-        const date = document.getElementById('whatIfDate').value;
-        if (!stock || !date) return;
-        // Fake random result
-        const gain = Math.random() > 0.5;
-        const percent = (Math.random() * 20 + 1).toFixed(2);
-        whatIfResult.textContent = gain ? `You would have gained +${percent}% on ${stock} since ${date}! 🎉` : `You would have lost -${percent}% on ${stock} since ${date}. 😬`;
-        whatIfResult.style.color = gain ? '#38b2ac' : '#e53e3e';
+        try {
+          e.preventDefault();
+          
+          const stockInput = document.getElementById('whatIfStock');
+          const dateInput = document.getElementById('whatIfDate');
+          
+          if (!stockInput || !dateInput) return;
+          
+          const stock = stockInput.value.trim().toUpperCase();
+          const date = dateInput.value;
+          
+          if (!stock || !date) return;
+          
+          // Fake random result
+          const gain = Math.random() > 0.5;
+          const percent = (Math.random() * 20 + 1).toFixed(2);
+          whatIfResult.textContent = gain ? 
+            `You would have gained +${percent}% on ${stock} since ${date}! 🎉` : 
+            `You would have lost -${percent}% on ${stock} since ${date}. 😬`;
+          whatIfResult.style.color = gain ? '#38b2ac' : '#e53e3e';
+        } catch (error) {
+          console.error('Error in What If Simulator:', error);
+          whatIfResult.textContent = 'An error occurred. Please try again.';
+          whatIfResult.style.color = '#e53e3e';
+        }
       });
     }
   }
@@ -347,62 +513,283 @@ window.addEventListener('DOMContentLoaded', () => {
   // SOCIAL PAGE INTERACTIVITY
   if (window.location.pathname.endsWith('social.html')) {
     // Clubs expand/collapse
-    document.querySelectorAll('.club-card').forEach(card => {
-      const btn = card.querySelector('.toggle-club');
-      const details = card.querySelector('.club-details');
-      btn.addEventListener('click', () => {
-        if (details.style.display === 'none' || !details.style.display) {
-          details.style.display = 'block';
-          btn.textContent = 'Hide Details';
-        } else {
-          details.style.display = 'none';
-          btn.textContent = 'Show Details';
+    const clubCards = document.querySelectorAll('.club-card');
+    if (clubCards.length > 0) {
+      clubCards.forEach(card => {
+        try {
+          const btn = card.querySelector('.toggle-club');
+          const details = card.querySelector('.club-details');
+          
+          if (!btn || !details) return;
+          
+          btn.addEventListener('click', () => {
+            try {
+              if (details.style.display === 'none' || !details.style.display) {
+                details.style.display = 'block';
+                btn.textContent = 'Hide Details';
+              } else {
+                details.style.display = 'none';
+                btn.textContent = 'Show Details';
+              }
+            } catch (error) {
+              console.error('Error in club toggle click:', error);
+            }
+          });
+          
+          card.addEventListener('blur', () => {
+            try {
+              details.style.display = 'none';
+              btn.textContent = 'Show Details';
+            } catch (error) {
+              console.error('Error in club card blur:', error);
+            }
+          });
+        } catch (error) {
+          console.error('Error setting up club card:', error);
         }
       });
-      card.addEventListener('blur', () => {
-        details.style.display = 'none';
-        btn.textContent = 'Show Details';
-      });
-    });
+    }
     // Ask Mentor chat
     const mentorForm = document.getElementById('mentorForm');
     const mentorInput = document.getElementById('mentorInput');
     const mentorResponse = document.getElementById('mentorResponse');
     if (mentorForm && mentorInput && mentorResponse) {
       mentorForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const q = mentorInput.value.trim();
-        if (!q) return;
-        // Canned AI response
-        let response = '';
-        if (q.toLowerCase().includes('stock')) response = 'Start by learning the basics, set your goals, and use Stoxly's virtual market to practice!';
-        else if (q.toLowerCase().includes('risk')) response = 'Diversify your portfolio and never invest more than you can afford to lose.';
-        else if (q.toLowerCase().includes('ipo')) response = 'An IPO is when a company first offers shares to the public. Research before investing!';
-        else response = 'Great question! Our mentors will get back to you soon.';
-        mentorResponse.innerHTML = `<div class='mentor-msg user-msg'>${q}</div><div class='mentor-msg ai-msg'>${response}</div>`;
-        mentorInput.value = '';
+        try {
+          e.preventDefault();
+          
+          const q = mentorInput.value.trim();
+          if (!q) return;
+          
+          // Canned AI response
+          let response = '';
+          if (q.toLowerCase().includes('stock')) {
+            response = 'Start by learning the basics, set your goals, and use Stoxly's virtual market to practice!';
+          } else if (q.toLowerCase().includes('risk')) {
+            response = 'Diversify your portfolio and never invest more than you can afford to lose.';
+          } else if (q.toLowerCase().includes('ipo')) {
+            response = 'An IPO is when a company first offers shares to the public. Research before investing!';
+          } else {
+            response = 'Great question! Our mentors will get back to you soon.';
+          }
+          
+          // Safely create HTML content
+          const userMsgDiv = document.createElement('div');
+          userMsgDiv.className = 'mentor-msg user-msg';
+          userMsgDiv.textContent = q;
+          
+          const aiMsgDiv = document.createElement('div');
+          aiMsgDiv.className = 'mentor-msg ai-msg';
+          aiMsgDiv.textContent = response;
+          
+          // Clear previous responses
+          mentorResponse.innerHTML = '';
+          
+          // Append new messages
+          mentorResponse.appendChild(userMsgDiv);
+          mentorResponse.appendChild(aiMsgDiv);
+          
+          // Clear input
+          mentorInput.value = '';
+        } catch (error) {
+          console.error('Error in Ask Mentor chat:', error);
+        }
       });
     }
   }
 
   // PROFILE PAGE INTERACTIVITY
   if (window.location.pathname.endsWith('profile.html')) {
-    // Edit Profile modal
-    const editProfileModal = document.getElementById('editProfileModal');
-    const openEditProfile = document.getElementById('openEditProfile');
-    const closeEditProfile = document.getElementById('closeEditProfile');
-    if (openEditProfile && editProfileModal) {
-      openEditProfile.addEventListener('click', (e) => {
-        e.stopPropagation();
-        editProfileModal.classList.add('active');
-      });
+    try {
+      // Edit Profile modal
+      const editProfileModal = document.getElementById('editProfileModal');
+      const openEditProfile = document.getElementById('openEditProfile');
+      const closeEditProfile = document.getElementById('closeEditProfile');
+      const editProfileForm = document.getElementById('editProfileForm');
+      // Profile fields
+      const profileName = document.getElementById('profileName');
+      const profileUsername = document.getElementById('profileUsername');
+      const profileBio = document.getElementById('profileBio');
+      const profileLocation = document.getElementById('profileLocation');
+      const profileFavStocks = document.getElementById('profileFavStocks');
+      const profileTwitter = document.getElementById('profileTwitter');
+      const profileLinkedIn = document.getElementById('profileLinkedIn');
+      const profileAvatar = document.getElementById('profileAvatar');
+      const avatarInput = document.getElementById('avatarInput');
+      const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+      // Extra fields
+      const profileXP = document.getElementById('profileXP');
+      const profileLevel = document.getElementById('profileLevel');
+      const profileJoinDate = document.getElementById('profileJoinDate');
+      // Modal open/close
+      if (openEditProfile && editProfileModal) {
+        openEditProfile.addEventListener('click', (e) => {
+          e.stopPropagation();
+          editProfileModal.classList.add('active');
+        });
+      }
+      if (closeEditProfile && editProfileModal) {
+        closeEditProfile.addEventListener('click', () => editProfileModal.classList.remove('active'));
+      }
+      if (editProfileModal) {
+        window.addEventListener('click', (e) => {
+          if (e.target === editProfileModal) editProfileModal.classList.remove('active');
+        });
+      }
+      // Save profile changes
+      if (editProfileForm) {
+        editProfileForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          profileName.textContent = document.getElementById('editName').value;
+          profileUsername.textContent = '@' + document.getElementById('editUsername').value;
+          profileBio.innerHTML = '<strong>Bio:</strong> ' + document.getElementById('editBio').value;
+          profileLocation.innerHTML = '<strong>Location:</strong> ' + document.getElementById('editLocation').value;
+          profileFavStocks.innerHTML = '<strong>Favorite Stocks:</strong> ' + document.getElementById('editFavStocks').value;
+          profileTwitter.href = document.getElementById('editTwitter').value;
+          profileLinkedIn.href = document.getElementById('editLinkedIn').value;
+          profileTwitter.textContent = '🐦 Twitter';
+          profileLinkedIn.textContent = '💼 LinkedIn';
+          // Optionally update XP/Level (demo)
+          // profileXP.textContent = ...
+          // profileLevel.textContent = ...
+          editProfileModal.classList.remove('active');
+        });
+      }
+      // Avatar change
+      if (changeAvatarBtn && avatarInput && profileAvatar) {
+        changeAvatarBtn.addEventListener('click', () => avatarInput.click());
+        avatarInput.addEventListener('change', function() {
+          if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              profileAvatar.src = e.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+          }
+        });
+      }
+      // Optionally: Add new recent activity (demo)
+      // const recentActivityList = document.getElementById('recentActivityList');
+      // if (recentActivityList) {
+      //   const addActivityBtn = document.createElement('button');
+      //   addActivityBtn.textContent = 'Add Demo Activity';
+      //   addActivityBtn.onclick = () => {
+      //     const li = document.createElement('li');
+      //     li.textContent = '⭐ Demo activity at ' + new Date().toLocaleTimeString();
+      //     recentActivityList.prepend(li);
+      //   };
+      //   recentActivityList.parentNode.insertBefore(addActivityBtn, recentActivityList);
+      // }
+    } catch (error) {
+      console.error('Error setting up profile page interactivity:', error);
     }
-    if (closeEditProfile && editProfileModal) {
-      closeEditProfile.addEventListener('click', () => editProfileModal.classList.remove('active'));
-    }
-    window.addEventListener('click', (e) => {
-      if (e.target === editProfileModal) editProfileModal.classList.remove('active');
-    });
-    // Badge tooltips are native via title attribute
   }
-}); 
+
+  // --- DEMO DATA GENERATION START ---
+  // 1. Add more module cards
+  const moduleContainer = document.querySelector('.modules-list');
+  if (moduleContainer) {
+    for (let i = 4; i <= 8; i++) {
+      const card = document.createElement('div');
+      card.className = 'module-card';
+      card.innerHTML = `<h3>Module ${i}</h3><p>Demo content for module ${i}.</p>`;
+      moduleContainer.appendChild(card);
+    }
+  }
+
+  // 2. Add more news bites
+  const newsCarousel = document.querySelector('.news-carousel');
+  if (newsCarousel) {
+    for (let i = 4; i <= 8; i++) {
+      const bite = document.createElement('div');
+      bite.className = 'news-bite';
+      bite.innerHTML = `<strong>News Headline ${i}</strong><p>Sample news content for item ${i}.</p>`;
+      newsCarousel.appendChild(bite);
+    }
+  }
+
+  // 3. Add more leaderboard rows
+  const leaderboardTableDemo = document.getElementById('leaderboardTable');
+  if (leaderboardTableDemo) {
+    const tbody = leaderboardTableDemo.querySelector('tbody');
+    if (tbody) {
+      for (let i = 6; i <= 15; i++) {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${i}</td><td>User${i}</td><td>${Math.floor(Math.random()*10000)}</td>`;
+        tbody.appendChild(row);
+      }
+    }
+  }
+
+  // 4. Add more social posts
+  const feed = document.querySelector('.feed-list');
+  if (feed) {
+    for (let i = 4; i <= 8; i++) {
+      const post = document.createElement('div');
+      post.className = 'post';
+      post.innerHTML = `
+        <div class="post-header">User${i} <span class="post-date">Today</span></div>
+        <div class="post-content">Sample post content for user ${i}.</div>
+        <div class="post-votes">
+          <button class="vote-btn" data-vote="bullish">🐂</button>
+          <span class="vote-count" id="bullish${i}">0</span>
+          <button class="vote-btn" data-vote="bearish">🐻</button>
+          <span class="vote-count" id="bearish${i}">0</span>
+        </div>
+      `;
+      feed.appendChild(post);
+    }
+  }
+
+  // 5. Add more portfolio stocks (trade.html)
+  if (window.location.pathname.endsWith('trade.html')) {
+    const portfolioTable = document.getElementById('portfolioTable');
+    if (portfolioTable) {
+      const tbody = portfolioTable.querySelector('tbody');
+      if (tbody) {
+        for (let i = 4; i <= 8; i++) {
+          const name = `STOCK${i}`;
+          const qty = Math.floor(Math.random()*50+1);
+          const price = Math.floor(Math.random()*1000+100);
+          const value = qty * price;
+          const row = document.createElement('tr');
+          row.innerHTML = `<td>${name}</td><td>${qty}</td><td>₹${price}</td><td>₹${value.toLocaleString()}</td><td><button class='remove-stock'>Remove</button></td>`;
+          tbody.appendChild(row);
+        }
+      }
+    }
+  }
+
+  // 6. Add more AI mentor cards (ai.html)
+  if (window.location.pathname.endsWith('ai.html')) {
+    const aiMentorList = document.querySelector('.ai-mentor-list');
+    if (aiMentorList) {
+      for (let i = 4; i <= 8; i++) {
+        const card = document.createElement('div');
+        card.className = 'ai-mentor-card';
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('data-info', `Extra info for AI Mentor ${i}`);
+        card.innerHTML = `<h3>AI Mentor ${i}</h3><p>Specialty: Demo ${i}</p>`;
+        aiMentorList.appendChild(card);
+      }
+    }
+  }
+
+  // 7. Add more club cards (social.html)
+  if (window.location.pathname.endsWith('social.html')) {
+    const clubList = document.querySelector('.clubs-list');
+    if (clubList) {
+      for (let i = 4; i <= 8; i++) {
+        const card = document.createElement('div');
+        card.className = 'club-card';
+        card.innerHTML = `
+          <div class="club-header">Club ${i}</div>
+          <button class="toggle-club">Show Details</button>
+          <div class="club-details" style="display:none;">Details for Club ${i}.</div>
+        `;
+        clubList.appendChild(card);
+      }
+    }
+  }
+  // --- DEMO DATA GENERATION END ---
+});
